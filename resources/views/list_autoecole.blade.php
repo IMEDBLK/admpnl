@@ -24,12 +24,12 @@ auto-ecoles
 
     </div>
     <div class="table-responsive">
-    <table class="table table-striped table-bordered table-sm">
+    <table class="table table-striped table-bordered table-sm table-responsive">
             <thead>
                 <tr>
                     <th class="text-wrap">ID</th>
                     <th class="text-wrap">Nom</th>
-                    <th class="text-wrap">Adresse</th>
+                    <th class="text-wrap">Region</th>
                     <th class="text-wrap">Matricule fiscale</th>
                     <th class="text-wrap">Email</th>
                     <th class="text-wrap">Pack</th>
@@ -42,7 +42,8 @@ auto-ecoles
                     <tr>
                         <td class="wrap">{{ $autoecole->id }}</td>
                         <td class="wrap">{{ $autoecole->nom }}</td>
-                        <td class="wrap">{{ $autoecole->adresse }}</td>
+
+                        <td class="wrap">{{ $autoecole->region }}</td>
                         <td class="wrap">{{ $autoecole->matricule_fiscale }}</td>
                         <td class="wrap">{{ $autoecole->email }}</td>
                         <td class="wrap">{{ $autoecole->pack->nom }}</td>
@@ -139,7 +140,7 @@ auto-ecoles
         align-items: center;
     }
     .dataTables_length {
-        margin-bottom: 10px;
+        margin-bottom: auto;
     }
     .dataTables_info {
         margin-top: 10px;

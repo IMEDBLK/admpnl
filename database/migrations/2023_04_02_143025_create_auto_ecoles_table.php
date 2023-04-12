@@ -10,19 +10,18 @@ class CreateAutoecolesTable extends Migration
         Schema::create('auto_ecoles', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->string('adresse');
+
             $table->string('matricule_fiscale');
             $table->string('email')->unique();
             $table->string('password');
             $table->unsignedBigInteger('pack_id');
             $table->foreign('pack_id')->references('id')->on('packs')->onDelete('cascade');
             $table->date('date_activation_pack');
+            $table->string('region'); // Add the region field
             $table->timestamps();
-
-
         });
 
-        Schema::table('autoecoles', function (Blueprint $table) {
+        Schema::table('auto_ecoles', function (Blueprint $table) {
             $table->unsignedBigInteger('pack_id')->change();
         });
     }
@@ -32,4 +31,3 @@ class CreateAutoecolesTable extends Migration
         Schema::dropIfExists('autoecoles');
     }
 }
-

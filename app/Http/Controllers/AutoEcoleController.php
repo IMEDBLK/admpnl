@@ -49,27 +49,28 @@ class AutoEcoleController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nom' => 'required',
-            'adresse' => 'required',
-            'matricule_fiscale' => 'required',
-            'email' => 'required|unique:auto_ecoles,email',
-            'password' => 'required',
-            'pack_id' => 'required',
-            'date_activation_pack' => 'required'
+            'nom' => 'required|max:255',
+            'region' => 'required',
+            'matricule_fiscale' => 'required|unique:autoecoles|max:255',
+            'email' => 'required|email|unique:autoecoles|max:255',
+            'password' => 'required|min:8',
+            'pack_id' => 'required|exists:packs,id',
+            'date_activation_pack' => 'required|date',
         ]);
 
-        $autoEcole = new AutoEcole();
-        $autoEcole->nom = $validatedData['nom'];
-        $autoEcole->adresse = $validatedData['adresse'];
-        $autoEcole->matricule_fiscale = $validatedData['matricule_fiscale'];
-        $autoEcole->email = $validatedData['email'];
-        $autoEcole->password = Hash::make($validatedData['password']);
-        $autoEcole->pack_id = $validatedData['pack_id'];
-        $autoEcole->date_activation_pack = $validatedData['date_activation_pack'];
-        $autoEcole->save();
+        $autoecole = new Autoecole;
+        $autoecole->nom = $validatedData['nom'];
+        $autoecole->region = $validatedData['region'];
+        $autoecole->matricule_fiscale = $validatedData['matricule_fiscale'];
+        $autoecole->email = $validatedData['email'];
+        $autoecole->password = Hash::make($validatedData['password']);
+        $autoecole->pack_id = $validatedData['pack_id'];
+        $autoecole->date_activation_pack = $validatedData['date_activation_pack'];
+        $autoecole->save();
 
-        return redirect()->route('autoecoles.index')->with('success', 'Auto-école créée avec succès.');
+        return redirect()->route('autoecoles.index');
     }
+
 
     public function edit(AutoEcole $autoEcole)
     {
@@ -81,7 +82,7 @@ class AutoEcoleController extends Controller
     {
         $validatedData = $request->validate([
             'nom' => 'required',
-            'adresse' => 'required',
+
             'matricule_fiscale' => 'required',
             'email' => [
                 'required',
@@ -96,7 +97,7 @@ class AutoEcoleController extends Controller
         ]);
 
         $autoEcole->nom = $validatedData['nom'];
-        $autoEcole->adresse = $validatedData['adresse'];
+
         $autoEcole->matricule_fiscale = $validatedData['matricule_fiscale'];
         $autoEcole->email = $validatedData['email'];
         if (!empty($validatedData['password'])) {

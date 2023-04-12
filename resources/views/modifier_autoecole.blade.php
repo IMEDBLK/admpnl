@@ -31,6 +31,40 @@ auto-ecole / modifier auto-école
         @enderror
     </div>
 
+
+    <div class="form-group">
+    <label for="region">Région :</label>
+    <select class="form-control " name="region">
+        <option value="">Choisissez une région</option>
+        <option value="Tunis">Tunis</option>
+        <option value="Ariana">Ariana</option>
+        <option value="Ben Arous">Ben Arous</option>
+        <option value="Manouba">Manouba</option>
+        <option value="Nabeul">Nabeul</option>
+        <option value="Zaghouan">Zaghouan</option>
+        <option value="Bizerte">Bizerte</option>
+        <option value="Béja">Béja</option>
+        <option value="Jendouba">Jendouba</option>
+        <option value="Kef">Le Kef</option>
+        <option value="Siliana">Siliana</option>
+        <option value="Sousse">Sousse</option>
+        <option value="Monastir">Monastir</option>
+        <option value="Mahdia">Mahdia</option>
+        <option value="Sfax">Sfax</option>
+        <option value="Kairouan">Kairouan</option>
+        <option value="Kasserine">Kasserine</option>
+        <option value="Sidi Bouzid">Sidi Bouzid</option>
+        <option value="Gabès">Gabès</option>
+        <option value="Mednine">Médenine</option>
+        <option value="Tataouine">Tataouine</option>
+        <option value="Gafsa">Gafsa</option>
+        <option value="Tozeur">Tozeur</option>
+        <option value="Kebili">Kébili</option>
+    </select>
+</div>
+
+
+
     <div class="form-group">
         <label for="adresse">Adresse:</label>
         <textarea name="adresse" id="adresse" class="form-control @error('adresse') is-invalid @enderror">{{ old('adresse', $autoEcole->adresse) }}</textarea>
@@ -91,4 +125,14 @@ auto-ecole / modifier auto-école
 
 
 @section('style')
+<style>
+select[name="region"],
+input[type="text"] {
+  width: 70%;
+
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+</style>
 @endsection

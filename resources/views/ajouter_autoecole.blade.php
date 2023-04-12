@@ -23,14 +23,43 @@ auto-ecole / ajouter auto-école
                 <div class="alert alert-danger text-white rounded">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="form-group">
-            <label for="adresse">Adresse:</label>
-            <input type="text" name="adresse" id="adresse" class="form-control @error('adresse') is-invalid @enderror" value="{{ old('nom') }}">
-            @error('adresse')
-                <div class="alert alert-danger text-white rounded">{{ $message }}</div>
+    <label for="region">Région :</label>
+    <select class="form-control " name="region">
+        <option value="">Choisissez une région</option>
+        <option value="Tunis">Tunis</option>
+        <option value="Ariana">Ariana</option>
+        <option value="Ben Arous">Ben Arous</option>
+        <option value="Manouba">Manouba</option>
+        <option value="Nabeul">Nabeul</option>
+        <option value="Zaghouan">Zaghouan</option>
+        <option value="Bizerte">Bizerte</option>
+        <option value="Béja">Béja</option>
+        <option value="Jendouba">Jendouba</option>
+        <option value="Kef">Le Kef</option>
+        <option value="Siliana">Siliana</option>
+        <option value="Sousse">Sousse</option>
+        <option value="Monastir">Monastir</option>
+        <option value="Mahdia">Mahdia</option>
+        <option value="Sfax">Sfax</option>
+        <option value="Kairouan">Kairouan</option>
+        <option value="Kasserine">Kasserine</option>
+        <option value="Sidi Bouzid">Sidi Bouzid</option>
+        <option value="Gabès">Gabès</option>
+        <option value="Mednine">Médenine</option>
+        <option value="Tataouine">Tataouine</option>
+        <option value="Gafsa">Gafsa</option>
+        <option value="Tozeur">Tozeur</option>
+        <option value="Kebili">Kébili</option>
+    </select>
+
+    @error('region')
+                <div class="alert alert-danger">{{ $message }}</div>
             @enderror
-        </div>
+
+
+</div>
+
 
         <div class="form-group">
             <label for="matricule_fiscale">Matricule fiscale:</label>
@@ -166,6 +195,17 @@ button[type="submit"]:hover {
   outline: none;
   border-color: #2ecc71;
 }
+
+
+select[name="region"],
+input[type="text"] {
+  width: 70%;
+
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+
 
 select[name="pack_id"],
 input[type="date"] {

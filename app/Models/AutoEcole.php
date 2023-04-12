@@ -11,12 +11,13 @@ class AutoEcole extends Model
 
     protected $fillable = [
         'nom',
-        'adresse',
+
         'matricule_fiscale',
         'email',
         'password',
         'pack_id',
-        'date_activation_pack'
+        'date_activation_pack',
+        'region'
     ];
 
     public function pack()
@@ -24,3 +25,4 @@ class AutoEcole extends Model
         return $this->belongsTo(Pack::class);
     }
 }
+
