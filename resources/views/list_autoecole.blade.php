@@ -2,245 +2,117 @@
 
 @section('title', 'Liste des auto-écoles')
 
-
 @section('title_content')
-auto-ecoles
+Auto-écoles
 @endsection
-
 
 @section('content')
 
-<div class="card">
-    <div class="card-header">
+<a href="{{ route('autoecoles.create') }}" class="btn btn-sm btn-primary btn-ajouter">ajouter auto école</a>
 
-        <div class="card-tools">
-            <a href="{{ route('autoecoles.create') }}" class="btn btn-success">Ajouter une auto-école</a>
-        </div>
+<div class="d-flex justify-content-between">
 
-
-
-
-
-
+  <form action="{{ route('autoecoles.index') }}" method="GET" class="form-inline form-recherche flex-grow-1 mr-2">
+    <div class="input-group">
+      <input type="text" class="form-control form-control-sm flex-grow-1" id="search" name="search"  placeholder="Rechercher..." onchange="this.form.submit()">
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-sm btn-primary">Rechercher</button>
+      </div>
     </div>
-    <div class="table-responsive">
-    <table class="table table-striped table-bordered table-sm table-responsive">
-            <thead>
-                <tr>
-                    <th class="text-wrap">ID</th>
-                    <th class="text-wrap">Nom</th>
-                    <th class="text-wrap">Region</th>
-                    <th class="text-wrap">Matricule fiscale</th>
-                    <th class="text-wrap">Email</th>
-                    <th class="text-wrap">Pack</th>
-                    <th class="text-wrap">Date d'activation du pack</th>
-                    <th class="text-wrap">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($autoecoles as $autoecole)
-                    <tr>
-                        <td class="wrap">{{ $autoecole->id }}</td>
-                        <td class="wrap">{{ $autoecole->nom }}</td>
+  </form>
 
-                        <td class="wrap">{{ $autoecole->region }}</td>
-                        <td class="wrap">{{ $autoecole->matricule_fiscale }}</td>
-                        <td class="wrap">{{ $autoecole->email }}</td>
-                        <td class="wrap">{{ $autoecole->pack->nom }}</td>
-                        <td class="wrap">{{ $autoecole->date_activation_pack }}</td>
-                        <td >
-                        <div class="btn-group d-flex flex-wrap" role="group" aria-label="Actions">
-    <form method="GET" action="{{ route('autoecoles.edit', $autoecole->id) }}">
-        @csrf
-        <button type="submit" class="btn btn-info"> Modifier</button>
-    </form>
-    <form action="{{ route('autoecoles.destroy', $autoecole->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette auto-école ?')">
-        @csrf
-        @method('DELETE')
-        <button class="btn btn-danger" type="submit">Supprimer</button>
-    </form>
-    <a href="{{ route('autoecoles.export', ['id' => $autoecole->id]) }}" class="btn btn-primary">Exporter en Excel</a>
-</div>
-
-                        </td>
-                    </tr>
-                @endforeach
-
-            </tbody>
-
-        </table>
-        </div>
-        <div class="pagination d-flex justify-content-end">
-    {{ $autoecoles->links() }}
-</div>
-        <div class="content"><form action="{{ route('autoecoles.index') }}" method="GET">
-
-        <div class="form-group">
-
-  <select class="form-control d-inline-block" name="pack_id" id="pack_id">
-    <option value="">Tous les packs</option>
-    @foreach($packs as $pack)
-      <option value="{{ $pack->id }}" @if(request('pack_id') == $pack->id) selected @endif>{{ $pack->nom }}</option>
-    @endforeach
+  <form method="GET" action="{{ route('autoecoles.index') }}" class="form-inline mb-2" style="width: 10%;">
+  <label for="perPage" class="mr-sm-2">Afficher</label>
+  <select name="perPage" id="perPage" class="form-control flex-grow-1" onchange="this.form.submit()"  >
+    <option value="2" {{ request('perPage') == 2 ? 'selected' : '' }}>2</option>
+    <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
+    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+    <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
   </select>
-  <button type="submit" class="btn btn-primary d-inline-block ">Filtrer</button>
+</form>
+
 </div>
 
 
-</form></div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Région</th>
+      <th>Matricule fiscale</th>
+      <th>Email</th>
+      <th>Pack</th>
+      <th>Date d'activation</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach ($autoecoles as $autoecole)
+      <tr>
+        <td>{{ $autoecole->id }}</td>
+        <td>{{ $autoecole->nom }}</td>
+        <td>{{ $autoecole->region }}</td>
+        <td>{{ $autoecole->matricule_fiscale }}</td>
+        <td>{{ $autoecole->email }}</td>
+        <td>{{ $autoecole->pack->nom }}</td>
+        <td>{{ $autoecole->date_activation_pack }}</td>
+        <td>
+          <a href="{{ route('autoecoles.edit', $autoecole->id) }}" class="btn btn-sm btn-primary">Modifier</a>
+          <a href="" class="btn btn-sm btn-success">Exporter vers Excel</a>
+          <form action="{{ route('autoecoles.destroy', $autoecole->id) }}" method="POST" style="display: inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette auto-école ?')">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+    @endforeach
+  </tbody>
+
+</table>
 
 
-    </div>
+<div class="d-flex justify-content-between align-items-center mt-10 mr-10">
+  <div style="width: 80%;"></div>
+  <div style="float: right;">
+  {{ $autoecoles->appends(request()->input())->links() }}
+
+  </div>
 </div>
+
+
+
 @endsection
+
 @section('style')
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-<style>
-
-
-
-
-.btn-group {
+    <style>
+        /* Ajoutez ici votre code CSS personnalisé pour cette section */
+        .form-recherche {
+  width: 20%;
+  float: right;
+  margin-left: 10px; /* facultatif : pour ajouter un peu d'espace entre la zone de recherche et le tableau */
+}
+.form-recherche.input-group {
   display: flex;
-  flex-direction: row;
   align-items: center;
 }
 
-.btn-group form {
-  margin-bottom: 1px;
+.form-recherche.input-group input.form-control {
+  flex: 1;
+}
+
+.btn-ajouter {
+  background-color: green;
+  width: 150px;
+
+    margin-right:5%;
+    margin-bottom:3%;
 }
 
 
-.wrap {
-    white-space: normal !important;
-}
 
 
-
-
-
-
-
-
-
-
- .fa-trash:before {
-    content: "\f1f8";
-}
-
-   .custom-btn {
-        background-color: blue;
-        color: white;
-    }
-   .card-header {
-        display: flex;
-        align-items: center;
-    }
-    .dataTables_length {
-        margin-bottom: auto;
-    }
-    .dataTables_info {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .dataTables_paginate {
-        margin-top: 10px;
-        margin-bottom: 10px;
-
-}
-
-
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
-.btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-}
-
-.btn-primary:focus {
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
-}
-
-
-.pagination {
-  width: 25%;
-  float: right;
-padding-right:5%;
-padding-top:5%;
-}
-
-.form-group
-{padding-top:20%;}
-.content {
-  width: 30%;
-  float: right;
-
-
-}
-
-#pack_id {
-    display: inline-block;
-    width: 50%;
-    margin-right: 2px;
-
-}
-
-.btn-primary {
-    display: inline-block;
-
-}
-
-
-</style>
-
+    </style>
 @endsection
-@section('script')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-<script>
-
-
-$(document).ready(function() {
-    $('.dataTable').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        columnDefs: [{
-            targets: 5, // Indice de la colonne de Pack
-            render: function(data, type, row, meta) {
-                return data.nom;
-            }
-        }]
-    });
-});
-</script>
-<script>$(document).ready(function() {
-    $('.dataTable').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tous"]],
-        "pageLength": 10,
-        "order": [[ 0, "asc" ]]
-    });
-});
-</script>
-
-
-<script>
-    $(document).ready(function() {
-    $('#example').DataTable( {
-        "dom": '<"top"i>rt<"bottom"flp><"clear">'
-    } );
-} );
-    </script>
-@endsection
-

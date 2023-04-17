@@ -7,37 +7,35 @@ use App\Models\AutoEcole;
 use App\Models\Pack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
-
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-
-
-
+use Illuminate\Database\Eloquent\Collection;
 
 class AutoEcoleController extends Controller
 {
     public function index(Request $request)
     {
-        // Récupération de tous les packs disponibles
-        $packs = Pack::all();
+        $perPage = intval($request->input('perPage', 5));// nombre d'éléments à afficher par page
 
-        // Récupération de toutes les auto-écoles avec pagination
-        $autoecoles = Autoecole::query();
+        $query = AutoEcole::query(); // Modifier le nom de la classe ici
 
-        // Filtrage par pack si un pack est sélectionné dans la requête
-        if ($request->filled('pack_id')) {
-            $autoecoles->whereHas('pack', function ($query) use ($request) {
-                $query->where('id', $request->input('pack_id'));
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nom', 'like', "%$search%")
+                    ->orWhere('region', 'like', "%$search%")
+                    ->orWhere('matricule_fiscale', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
             });
         }
 
-        $autoecoles = $autoecoles->paginate(2);
+        $sql = $query->with('pack')->orderBy('id')->toSql(); // Here we use toSql()
 
-        return view('list_autoecole', compact('autoecoles', 'packs'));
+        $autoecoles = $query->with('pack')->orderBy('id')->paginate($perPage);
+
+        return view('list_autoecole', compact('autoecoles', 'perPage', 'sql'));
     }
+
 
 
     public function create()

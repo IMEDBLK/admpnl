@@ -47,7 +47,8 @@ Route::delete('/packs/{pack}', [PackController::class, 'destroy'])->name('packs.
 
 
 //routes auto ecole
-Route::get('/autoecoles', [AutoecoleController::class, 'index'])->name('autoecoles.index')->middleware('auth');
+Route::get('/autoecoles/{page?}/{perPage?}', [AutoecoleController::class, 'index'])->where(['page' => '[0-9]+', 'perPage' => '[0-9]+'])->name('autoecoles.index')->middleware('auth');
+
 Route::get('/autoecoles/create', [AutoecoleController::class, 'create'])->name('autoecoles.create')->middleware('auth');
 Route::post('/autoecoles', [AutoecoleController::class, 'store'])->name('autoecoles.store')->middleware('auth');
 Route::get('/autoecoles/{id}', [AutoecoleController::class, 'show'])->name('autoecoles.show')->middleware('auth');
